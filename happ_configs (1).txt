@@ -1,0 +1,5085 @@
+[
+  {
+    "dns": {
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "1.1.1.1",
+        "1.0.0.1"
+      ],
+      "queryStrategy": "UseIP"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "inboundTag": [
+            "wl-fallback-in"
+          ],
+          "balancerTag": "Whitelist_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Super_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Super_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Super_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "wl-fallback-loop"
+        },
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "whitelist"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Whitelist_Balancer",
+          "selector": [
+            "whitelist"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        }
+      ],
+      "domainMatcher": "hybrid",
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "127.0.0.1",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth"
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "127.0.0.1",
+        "protocol": "http",
+        "settings": {
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ne5.rexten.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ne5.rexten.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-2",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "lv.dexlen.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "lv.dexlen.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-3",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ee.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ee.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-4",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "usa.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "usa.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-5",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "sw.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-02f0-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "sw.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-6",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "pl.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "pl.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-7",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "de.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "de.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "proxy-8",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ne5.rexten.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ne5.rexten.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-9",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "de.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "de.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-10",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "lv.dexlen.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "lv.dexlen.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-11",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "fl3.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "fl3.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-12",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ee.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ee.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-13",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "sw.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "sw.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-14",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "pl.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "pl.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "proxy-15",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "usa.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "usa.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "whitelist",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "wln.rexten.cc",
+              "port": 3443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ads.x5.ru",
+            "publicKey": "2dh6JEN82TzFbSjv2aLL-2xaPg5TQs8X_ulZCrGyfGc",
+            "fingerprint": "firefox"
+          }
+        }
+      },
+      {
+        "tag": "whitelist-2",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "wln.rexten.cc",
+              "port": 2053,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "api-maps.yandex.ru",
+            "publicKey": "2dh6JEN82TzFbSjv2aLL-2xaPg5TQs8X_ulZCrGyfGc",
+            "fingerprint": "firefox"
+          }
+        }
+      },
+      {
+        "tag": "whitelist-3",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "wln.rexten.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ads.x5.ru",
+            "publicKey": "2dh6JEN82TzFbSjv2aLL-2xaPg5TQs8X_ulZCrGyfGc",
+            "fingerprint": "firefox"
+          }
+        }
+      },
+      {
+        "tag": "wl-fallback-loop",
+        "protocol": "loopback",
+        "settings": {
+          "inboundTag": "wl-fallback-in"
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "whitelist"
+      ]
+    },
+    "remarks": "🇪🇺 Автоматический выбор"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ne5.rexten.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ne5.rexten.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ne5.rexten.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ne5.rexten.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇳🇱 ♾️ Нидерланды"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "pl.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "pl.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "pl.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "pl.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇵🇱 ♾️ Польша"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "de.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "de.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "de.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "de.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇩🇪 ♾️ Германия"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "lv.dexlen.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "lv.dexlen.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "lv.dexlen.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "lv.dexlen.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇱🇻 ♾️ Латвия  [Gemini ✨]"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "sw.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-02f0-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "sw.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "sw.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "sw.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇸🇪 ♾️ Швеция  [Gemini ✨]"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ee.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ee.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ee.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ee.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇪🇪 ♾️ Эстония"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "balancerTag": "Main_Balancer"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "network": "tcp,udp",
+          "balancerTag": "Main_Balancer"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy",
+            "grpc"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        },
+        {
+          "tag": "Main_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "grpc"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "usa.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "usa.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "grpc",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "usa.lenvex.cc",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "grpc",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "usa.lenvex.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          },
+          "grpcSettings": {
+            "serviceName": "GunService"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy",
+        "grpc"
+      ]
+    },
+    "remarks": "🇺🇸 ♾️ Америка"
+  },
+  {
+    "dns": {
+      "servers": [
+        "1.1.1.1",
+        "1.0.0.1"
+      ],
+      "queryStrategy": "UseIP"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        }
+      ],
+      "domainMatcher": "hybrid",
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "127.0.0.1",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth"
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "127.0.0.1",
+        "protocol": "http",
+        "settings": {
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "br.dexlen.cc",
+              "port": 8443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": "xtls-rprx-vision"
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "tcp",
+          "tcpSettings": {},
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "br.dexlen.cc",
+            "publicKey": "_NcF141EQLSjJU5JxyZXjH6NCi5eb_BOes9E_unBjRc",
+            "fingerprint": "chrome"
+          },
+          "finalmask": {
+            "tcp": [
+              {
+                "type": "fragment",
+                "settings": {
+                  "length": "10-20",
+                  "packets": "tlshello",
+                  "interval": "10-20"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom"
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "remarks": "🇷🇺 ♾️ Россия"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio",
+            "domain:tilda.cc",
+            "domain:tilda.ru",
+            "domain:tilda.ws",
+            "domain:tildaapi.com",
+            "domain:tildacdn.com",
+            "domain:tildacdn.net"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "outboundTag": "proxy"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "95.129.232.184",
+              "port": 443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "ws",
+          "wsSettings": {
+            "path": "/gateway/v1/ws/94b16b58103124b4c7cea6f5d603e30e",
+            "host": "global.prem-ai.shop",
+            "headers": {
+              "X-Whitelist-Header": "b9f19fe0-9631-11f1-9ba2-6b0f2db05f84"
+            }
+          },
+          "security": "tls",
+          "tlsSettings": {
+            "serverName": "global.prem-ai.shop",
+            "enableSessionResumption": false,
+            "fingerprint": "firefox",
+            "alpn": [
+              "http/1.1"
+            ]
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy"
+      ]
+    },
+    "remarks": " 🇩🇪 💰 Белые списки [LTE]"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio",
+            "domain:tilda.cc",
+            "domain:tilda.ru",
+            "domain:tilda.ws",
+            "domain:tildaapi.com",
+            "domain:tildacdn.com",
+            "domain:tildacdn.net"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "outboundTag": "proxy"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "vless",
+        "settings": {
+          "vnext": [
+            {
+              "address": "ne5.rexten.cc",
+              "port": 8443,
+              "users": [
+                {
+                  "id": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27",
+                  "encryption": "none",
+                  "flow": ""
+                }
+              ]
+            }
+          ]
+        },
+        "streamSettings": {
+          "network": "xhttp",
+          "xhttpSettings": {
+            "mode": "auto",
+            "host": "",
+            "path": "/"
+          },
+          "security": "reality",
+          "realitySettings": {
+            "serverName": "ne5.rexten.cc",
+            "publicKey": "OFmJtVi6OB9E6KIc5QV5YmoouimRFc-Se9hICjtV8hQ",
+            "fingerprint": "firefox"
+          },
+          "sockopt": {
+            "dialerProxy": "fragment"
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy"
+      ]
+    },
+    "remarks": "🇳🇱 ♾️ Запасной №1 [не iOS] "
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio",
+            "domain:tilda.cc",
+            "domain:tilda.ru",
+            "domain:tilda.ws",
+            "domain:tildaapi.com",
+            "domain:tildacdn.com",
+            "domain:tildacdn.net"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "outboundTag": "proxy"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "hysteria",
+        "settings": {
+          "address": "144.31.220.128",
+          "port": 443,
+          "version": 2
+        },
+        "streamSettings": {
+          "network": "hysteria",
+          "hysteriaSettings": {
+            "version": 2,
+            "auth": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27"
+          },
+          "security": "tls",
+          "tlsSettings": {
+            "serverName": "de.lenvex.cc",
+            "enableSessionResumption": false,
+            "fingerprint": "firefox",
+            "alpn": [
+              "h3"
+            ]
+          },
+          "finalmask": {
+            "udp": [
+              {
+                "type": "salamander",
+                "settings": {
+                  "password": "EIjjc4bgqlPtGSgdZl0WBEoY"
+                }
+              }
+            ],
+            "quicParams": {
+              "congestion": "bbr"
+            }
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy"
+      ]
+    },
+    "remarks": "🇩🇪 🎮 Германия [Игровой]"
+  },
+  {
+    "dns": {
+      "hosts": {
+        "one.one.one.one": [
+          "8.8.8.8",
+          "8.8.4.4"
+        ]
+      },
+      "servers": [
+        {
+          "address": "localhost",
+          "domains": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ]
+        },
+        "https://dns.google/dns-query"
+      ]
+    },
+    "log": {
+      "error": "",
+      "access": "",
+      "loglevel": "warning"
+    },
+    "routing": {
+      "rules": [
+        {
+          "type": "field",
+          "domain": [
+            "domain:renvex.cc",
+            "domain:senrix.cc",
+            "domain:bolvanchik.cc",
+            "domain:monvex.cc",
+            "domain:ml.cloud",
+            "domain:crazyvpn.net",
+            "domain:crazyvpn.cc",
+            "domain:relaybridge.net",
+            "domain:zentry.cc"
+          ],
+          "balancerTag": "Service_Balancer"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "geosite:category-ru",
+            "regexp:^([\\w\\-\\.]+\\.)ru$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1ai$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--p1acf$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80asehdb$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--c1avg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80aswg$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--80adxhks$",
+            "regexp:^([\\w\\-\\.]+\\.)moscow$",
+            "regexp:^([\\w\\-\\.]+\\.)xn--d1acj3b$",
+            "ipv4-internet.yandex.net",
+            "ipv6-internet.yandex.net",
+            "ip.mail.ru",
+            "ifconfig.me",
+            "api.ipify.org",
+            "checkip.amazonaws.com",
+            "browserleaks.com",
+            "2ip.io",
+            "ipinfo.io",
+            "myip.com",
+            "api4.my-ip.io",
+            "icanhazip.com",
+            "ident.me",
+            "domain:yandex.com",
+            "domain:yandex.net",
+            "domain:yastatic.net",
+            "domain:vk.com",
+            "domain:userapi.com",
+            "domain:vk-cdn.net",
+            "domain:vkuservideo.net",
+            "domain:vkuser.net",
+            "domain:mycdn.me",
+            "domain:avito.st",
+            "domain:ifconfig.co",
+            "domain:ifconfig.io",
+            "domain:ipify.org",
+            "domain:ipapi.co",
+            "domain:ipapi.is",
+            "domain:ip-api.com",
+            "domain:ip-api.io",
+            "domain:ipwho.is",
+            "domain:ipwhois.app",
+            "domain:ipwhois.io",
+            "domain:my-ip.io",
+            "domain:ipecho.net",
+            "domain:myexternalip.com",
+            "domain:wtfismyip.com",
+            "domain:ip.sb",
+            "domain:seeip.org",
+            "domain:geojs.io",
+            "domain:checkip.dyndns.org",
+            "domain:2ip.ua",
+            "domain:iplocation.net",
+            "domain:ip2location.io",
+            "domain:ipgeolocation.io",
+            "domain:db-ip.com",
+            "domain:ipdata.co",
+            "domain:ipregistry.co",
+            "domain:ipstack.com",
+            "domain:iplocate.io",
+            "domain:whatismyipaddress.com",
+            "domain:whatismyip.com",
+            "domain:showmyip.com",
+            "domain:myip.wtf",
+            "domain:ipleak.net",
+            "domain:dnsleaktest.com",
+            "domain:redheadsound.studio",
+            "domain:tilda.cc",
+            "domain:tilda.ru",
+            "domain:tilda.ws",
+            "domain:tildaapi.com",
+            "domain:tildacdn.com",
+            "domain:tildacdn.net"
+          ],
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "domain": [
+            "domain:tiktok.com",
+            "domain:tiktokv.com",
+            "domain:tiktokv.eu",
+            "domain:tiktokv.us",
+            "domain:tiktokcdn.com",
+            "domain:tiktokcdn-eu.com",
+            "domain:tiktokcdn-us.com",
+            "domain:tiktokw.us",
+            "domain:ttwstatic.com",
+            "domain:ttlivecdn.com",
+            "domain:byteoversea.com",
+            "domain:ibytedtos.com",
+            "domain:ibyteimg.com",
+            "domain:muscdn.com",
+            "domain:musical.ly",
+            "domain:bytefcdn-oversea.com",
+            "domain:tik-tokapi.com"
+          ],
+          "outboundTag": "proxy"
+        },
+        {
+          "ip": [
+            "geoip:private",
+            "geoip:ru"
+          ],
+          "type": "field",
+          "outboundTag": "direct"
+        },
+        {
+          "type": "field",
+          "protocol": [
+            "bittorrent"
+          ],
+          "outboundTag": "direct"
+        }
+      ],
+      "balancers": [
+        {
+          "tag": "Service_Balancer",
+          "selector": [
+            "proxy"
+          ],
+          "strategy": {
+            "type": "leastLoad",
+            "settings": {
+              "maxRTT": "2s",
+              "expected": 3,
+              "baselines": [
+                "200ms",
+                "500ms"
+              ],
+              "tolerance": 0.3
+            }
+          },
+          "fallbackTag": "direct"
+        }
+      ],
+      "domainStrategy": "IPIfNonMatch"
+    },
+    "inbounds": [
+      {
+        "tag": "socks",
+        "port": 10808,
+        "listen": "0.0.0.0",
+        "protocol": "socks",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      },
+      {
+        "tag": "http",
+        "port": 10809,
+        "listen": "0.0.0.0",
+        "protocol": "http",
+        "settings": {
+          "udp": true,
+          "auth": "noauth",
+          "allowTransparent": false
+        },
+        "sniffing": {
+          "enabled": true,
+          "routeOnly": false,
+          "destOverride": [
+            "http",
+            "tls",
+            "quic"
+          ]
+        }
+      }
+    ],
+    "outbounds": [
+      {
+        "tag": "proxy",
+        "protocol": "hysteria",
+        "settings": {
+          "address": "sw.lenvex.cc",
+          "port": 443,
+          "version": 2
+        },
+        "streamSettings": {
+          "network": "hysteria",
+          "hysteriaSettings": {
+            "version": 2,
+            "auth": "bc1dc8bd-2edc-4a24-a1de-8c71fd3baa27"
+          },
+          "security": "tls",
+          "tlsSettings": {
+            "serverName": "sw.lenvex.cc",
+            "enableSessionResumption": false,
+            "fingerprint": "firefox",
+            "alpn": [
+              "h3"
+            ]
+          },
+          "finalmask": {
+            "udp": [
+              {
+                "type": "salamander",
+                "settings": {
+                  "password": "EIjjc4bgqlPtGSgdZl0WBEoY"
+                }
+              }
+            ],
+            "quicParams": {
+              "congestion": "bbr"
+            }
+          }
+        }
+      },
+      {
+        "tag": "direct",
+        "protocol": "freedom",
+        "settings": {
+          "domainStrategy": "UseIPv4"
+        }
+      },
+      {
+        "tag": "block",
+        "protocol": "blackhole"
+      },
+      {
+        "tag": "fragment",
+        "protocol": "freedom",
+        "settings": {
+          "fragment": {
+            "length": "10-20",
+            "packets": "tlshello",
+            "interval": "1-5"
+          },
+          "domainStrategy": "UseIPv4"
+        },
+        "streamSettings": {
+          "sockopt": {
+            "tcpNoDelay": true
+          }
+        }
+      }
+    ],
+    "burstObservatory": {
+      "pingConfig": {
+        "timeout": "3s",
+        "interval": "1m",
+        "sampling": 3,
+        "destination": "http://www.gstatic.com/generate_204",
+        "connectivity": ""
+      },
+      "subjectSelector": [
+        "proxy"
+      ]
+    },
+    "remarks": "🇸🇪 🎮 Швеция [Игровой]"
+  }
+]
